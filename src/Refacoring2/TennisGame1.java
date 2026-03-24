@@ -5,7 +5,6 @@ public class TennisGame1 implements TennisGame {
     // geändert: sprechendere Variablennamen
     private int player1Score = 0;
     private int player2Score = 0;
-
     private String player1Name;
     private String player2Name;
     
