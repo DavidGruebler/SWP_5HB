@@ -2,12 +2,14 @@ package Refacoring2;
 
 public class TennisGame1 implements TennisGame {
 
-    // geändert: sprechendere Variablennamen
+    // geändert: sprechendere Variablennamen statt m_score1 und m_score2
     private int player1Score = 0;
     private int player2Score = 0;
+
+    // geändert: Spielernamen bleiben erhalten
     private String player1Name;
     private String player2Name;
-    
+
     public TennisGame1(String player1Name, String player2Name) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
@@ -15,25 +17,22 @@ public class TennisGame1 implements TennisGame {
 
     @Override
     public void wonPoint(String playerName) {
-        // Verwenden von equals und nicht ==
-        if ("player1".equals(playerName)) {
+        // geändert: Vergleich mit equals statt ==
+        // geändert: echter Spielername wird verglichen
+        if (player1Name.equals(playerName)) {
             player1Score++;
         } else {
             player2Score++;
         }
     }
-    
-    //Mathe zum vergleichen des scores
+
+    // geändert: Methode prüft nur noch, ob beide gleich viele Punkte haben
     public boolean equalScore() {
-    	if(player1Score==player2Score) {
-    		return true;
-    	}
-    	return false;
+        return player1Score == player2Score;
     }
-    
-    // Das Anzeigen des Textes für die verschiedenen Pukte in eine eigene Mathode
+
+    // geändert: Gleichstand wurde in eigene Methode ausgelagert
     public String getEqualScoreText() {
-    	if(equalScore()) {
         switch (player1Score) {
             case 0:
                 return "Love-All";
@@ -43,29 +42,85 @@ public class TennisGame1 implements TennisGame {
                 return "Thirty-All";
             default:
                 return "Deuce";
-        	}
         }
     }
-    
+
+    // geändert: eigene Methode für Advantage / Win
     public String declareWinner() {
-    	
-    	int scoreDifference = player1Score-player2Score;
-    	
-    	if (player1Score>=4 || player2Score>=4) {
-            if (scoreDifference==1) 
-            	return "Advantage player1";
-            else if (scoreDifference ==-1)
-            	return "Advantage player2";
-            else if (scoreDifference>=2) 
-            	return "Win for player1";
-            else 
-            	return "Win for player2";
+        int scoreDifference = player1Score - player2Score;
+
+        if (scoreDifference == 1) {
+            return "Advantage player1";
+        } else if (scoreDifference == -1) {
+            return "Advantage player2";
+        } else if (scoreDifference >= 2) {
+            return "Win for player1";
+        } else {
+            return "Win for player2";
         }
-    	
     }
-    
-    //long method: Inhalt in andere Methode übertragen
+
+    // geändert: normale Punkteanzeige in eigene Methode ausgelagert
+    public String getRunningScore() {
+        String score = "";
+
+        // geändert: player1Score statt altem m_score1
+        switch (player1Score) {
+            case 0:
+                score = "Love";
+                break;
+            case 1:
+                score = "Fifteen";
+                break;
+            case 2:
+                score = "Thirty";
+                break;
+            case 3:
+                score = "Forty";
+                break;
+        }
+
+        score += "-";
+
+        // geändert: player2Score statt altem m_score2
+        switch (player2Score) {
+            case 0:
+                score += "Love";
+                break;
+            case 1:
+                score += "Fifteen";
+                break;
+            case 2:
+                score += "Thirty";
+                break;
+            case 3:
+                score += "Forty";
+                break;
+        }
+
+        return score;
+    }
+
+    @Override
+    public String getScore() {
+
+        // geändert: Logik in kleine Methoden aufgeteilt
+        if (equalScore()) {
+            return getEqualScoreText();
+        }
+
+        // geändert: prüft Endspiel-Situation
+        if (player1Score >= 4 || player2Score >= 4) {
+            return declareWinner();
+        }
+
+        // geändert: normale Spielstand-Anzeige ausgelagert
+        return getRunningScore();
+    }
+
     /*
+    alter Code auskommentiert, weil die Methode zu lang und unübersichtlich war
+
     public String getScore() {
         String score = "";
         int tempScore=0;
@@ -85,7 +140,7 @@ public class TennisGame1 implements TennisGame {
                 default:
                         score = "Deuce";
                     break;
-                
+
             }
         }
         else if (m_score1>=4 || m_score2>=4)
@@ -120,6 +175,46 @@ public class TennisGame1 implements TennisGame {
             }
         }
         return score;
+    }
+    */
+
+    /*
+    alter fehlerhafter Zwischenstand auskommentiert, weil die Methode so nicht funktioniert hat
+
+    public String getEqualScoreText() {
+        if(equalScore()) {
+            switch (player1Score) {
+                case 0:
+                    return "Love-All";
+                case 1:
+                    return "Fifteen-All";
+                case 2:
+                    return "Thirty-All";
+                default:
+                    return "Deuce";
+            }
+        }
+    }
+    */
+
+    /*
+    alter fehlerhafter Zwischenstand auskommentiert, weil void keine Strings zurückgeben darf
+
+    public void declareWinner() {
+
+        int scoreDifference = player1Score-player2Score;
+
+        if (player1Score>=4 || player2Score>=4) {
+            if (scoreDifference==1)
+                return "Advantage player1";
+            else if (scoreDifference ==-1)
+                return "Advantage player2";
+            else if (scoreDifference>=2)
+                return "Win for player1";
+            else
+                return "Win for player2";
+        }
+
     }
     */
 }
