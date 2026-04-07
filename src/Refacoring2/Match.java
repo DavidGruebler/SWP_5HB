@@ -4,23 +4,21 @@ public class Match {
 
     public static void main(String[] args) {
 
-        // geändert: Spiel wird erstellt mit zwei Spielernamen
-        TennisGame1 game = new TennisGame1("player1", "player2");
+        Player player1 = new Player("Nevio");
+        Player player2 = new Player("David");
 
-        // geändert: Punkte werden vergeben
-        game.wonPoint("player1"); // 15-0
-        game.wonPoint("player2"); // 15-15
-        game.wonPoint("player1"); // 30-15
-        game.wonPoint("player1"); // 40-15
-        game.wonPoint("player2"); // 40-30
+        TennisMatch game = new TennisMatch(player1.getName(), player2.getName());
 
-        // geändert: aktueller Spielstand wird ausgegeben
+        game.wonPoint(player1.getName()); // 15-0
+        game.wonPoint(player2.getName()); // 15-15
+        game.wonPoint(player1.getName()); // 30-15
+        game.wonPoint(player2.getName()); // 30-30
+        game.wonPoint(player1.getName()); // 40-30
+
         System.out.println("Aktueller Spielstand: " + game.getScore());
 
-        // weitere Punkte für Sieg testen
-        game.wonPoint("player1"); // Sieg Spieler 1
+        game.wonPoint(player1.getName()); //Win for player1
 
-        // geändert: Endstand wird ausgegeben
-        System.out.println("Endstand: " + game.getScore());
+        System.out.println("Endstand: "+game.getScore());
     }
 }
